@@ -260,9 +260,8 @@ function displayCurrentTime() {
 
   // console.log(timeString)
   // process.stdout.clearLine()
-  // process.stdout.write("\n"+timeString)
-
-  console.log(timeString)
+  // process.stdout.write
+//("\n"+timeString")
 
 
 

@@ -1,4 +1,58 @@
 import axios from 'axios';
+import mongoose from 'mongoose';
+import Book from './models/db.js';
+import dotenv from 'dotenv';
+console.log("clock on !")
+dotenv.config();
+const uri = `mongodb+srv://${process.env.URI_PASS}@cluster0.8t0hk4y.mongodb.net/${process.env.DATABASE}`;
+const dbcon = async (uri) => {
+  try {
+    await mongoose.connect(uri);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+  }
+};
+const dbclose = async () => {
+  try {
+    await mongoose.connection.close();
+    console.log("We are Disconnecting from MongoDB");
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+  }
+}
+
+const readdata = async () => {
+  try {
+    const pro = await Book.find();
+    console.log("readdata")
+    console.log(pro)
+  } catch (error) {
+    console.log(500, "errorv ", error.message );
+  }
+};
+const readdatabase = async () => {
+  await dbcon(uri);
+  await readdata();
+  await dbclose();
+};
+const writedata = async (data)=>{
+  try{
+    const pro = await Book.create(data);
+    console.log(pro)
+  }
+  catch(error){
+    console.log(500, "errorv ", error.message );
+}
+}
+const createdata= async (data)=>{
+  await dbcon(uri);
+  await writedata(data);
+  await dbclose();
+}
+const putdata = async (id,data)=>{}
+
+
 
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -19,6 +73,9 @@ const DL_Satta = async () => {
 
   await sleep(20000);
   console.log("sleep of ds");
+  const obj = {name:"DL_Satta",today:"2.30",yesterday:"2.30"}
+
+createdata(obj);
   console.log("DL_Satta");
   dlSattaCalled = true;
   sleep(60000)
@@ -26,13 +83,23 @@ const DL_Satta = async () => {
   return true;
 };
 
-const DL_bazar = () => {
+const DL_bazar = async() => {
   if (dlBazarCalled) {
     return false;
   }
   console.log("DL_bazar");
   dlBazarCalled = true;
-  methA().then((res) => {console.log(res[1][0])});
+  let obj = {}
+ await methA().then((res) => {const obj ={
+  name:res[1][0].name,
+  today:res[1][0].today,
+  yesterday:res[1][0].yesterday
+}
+// console.log(obj)
+createdata(obj)
+}).catch((e)=>console.log(e));
+//  createdata()
+// obj = res[1][0]
   sleep(60000)
   dlSattaCalled = false;
   return true;
@@ -44,12 +111,21 @@ const Shree_Ganesh = () => {
   }
   console.log("Shree_Ganesh");
   shreeGaneshCalled = true;
-  methA().then((res) => {console.log(res[1][1])});
+  methA().then((res) => { const obj ={
+    name:res[1][1].name,
+    today:res[1][1].today,
+    yesterday:res[1][1].yesterday
+  }
+  // console.log(obj)
+  createdata(obj)
+}).catch((e)=>console.log(e));
+  // obj =res[1][1]
+
   sleep(60000)
   dlBazarCalled = false;
   return true;
 };
-
+// ---------------------------->
 const Faridabad = () => {
   if (faridabadCalled) {
     return false;
@@ -63,8 +139,10 @@ const Faridabad = () => {
       "yesterday": res[0][1].faridabad
 
     }
-    console.log(obj)
-  });
+    // console.log(obj)
+    createdata(obj)
+    
+  }).catch((e)=>console.log(e));
 
 
   sleep(60000)
@@ -84,8 +162,9 @@ const Gajiyabad = () => {
       "today": res[0][0].gaziabad,
       "yesterday": res[0][1].gaziabad
     }
-    console.log(obj)
-  });
+    // console.log(obj)
+    createdata(obj)
+  }).catch((e)=>console.log(e));
 
   sleep(60000)
   faridabadCalled = false;
@@ -104,8 +183,9 @@ const Gali = () => {
       "today": res[0][0].gali,
       "yesterday": res[0][1].gali
     }
-    console.log(obj)
-    });
+    // console.log(obj)
+    createdata(obj)
+    }).catch((e)=>console.log(e));
 
   sleep(60000)
   gajiyabadCalled = false;
@@ -126,8 +206,9 @@ const Disawar = () => {
       "today": res[0][0].disawer,
       "yesterday": res[0][1].yesterday
     }
-    console.log(obj)
-  });
+    // console.log(obj)
+    createdata(obj)
+  }).catch((e)=>console.log(e));
   sleep(60000)
   galiCalled = false;
   return true;
@@ -151,32 +232,45 @@ const methA = async () => {
     return("error");
   }
 };
+const data = [
+  { name: "DL_Satta", time: "2.30" },//not working
+
+  { name: "DL_bazar", time: "3.00" },//-3.00 
+  { name: "Shree Ganesh", time: "4.50" },//-4.50
+
+  { name: "Faridabad", time: "6.00" },//-6.00
+  { name: "Gajiyabad", time: "9.00" },//-9.00 
+  { name: "Gali", time: "11.30" },//-11.30
+  { name: "Disawar", time: "5.00" },//-5.00
+];
+
+
+
+// readdatabase();
+
 
 function displayCurrentTime() {
   const now = new Date();
+  // const today = now.getDate() +" "+(now.getMonth()+1)+" "+now.getFullYear()
+  // console.log(today)
   const timeString = now.toLocaleTimeString();
   const a = timeString.split(':');
   const currentTime = `${a[0]}.${a[1]}`;
   const AM = a[2].includes('AM');
+
+  // console.log(timeString)
+  // process.stdout.clearLine()
+  // process.stdout.write("\n"+timeString)
+
   console.log(timeString)
-  
 
-  const data = [
-    { name: "DL_Satta", time: "2.30" },//not working
 
-    { name: "DL_bazar", time: "3.00" },//-3.00
-    { name: "Shree Ganesh", time: "4.50" },//-4.50
 
-    { name: "Faridabad", time: "6.00" },//-6.00
-    { name: "Gajiyabad", time: "9.00" },//-9.00
-    { name: "Gali", time: "11.30" },//-11.30
-    { name: "Disawar", time: "4.41" },//5.00
-  ];
-
+ 
   const matchingNames = data.filter((item) => item.time === currentTime);
 
   if (!AM && matchingNames.length > 0) {
-    console.log("it's morning ", AM);
+    // console.log("it's morning ", AM);
     matchingNames.forEach((item) => {
       switch (item.name) {
         case "DL_Satta":

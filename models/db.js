@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const schemas = new mongoose.Schema({
-  title: { type: String, required: true },
-  decription: { type: String},
-  link: { type: String },
-  prolink: { type: String },
-
+  name: { type: String },
+  today: { type: String },
+  yesterday: { type: String },
 
 });
 
-module.exports = mongoose.model('sattaking', schemas);
+const Sattaking = mongoose.model('sattaking', schemas);
+
+export default Sattaking;

@@ -15,6 +15,8 @@ app.use(bodyParser.json());
 const dbcon = async (uri) => {
   try {
     await mongoose.connect(uri, {
+       useNewUrlParser: true,
+  useUnifiedTopology: true
     });
     console.log("db on!");
   } catch (error) {

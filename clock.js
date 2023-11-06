@@ -257,13 +257,10 @@ function displayCurrentTime() {
   const a = timeString.split(':');
   const currentTime = `${a[0]}.${a[1]}`;
   const AM = a[2].includes('AM');
-
   // console.log(timeString)
   // process.stdout.clearLine()
-  // process.stdout.write
-//("\n"+timeString")
-
-
+  // process.stdout.write("\n"+timeString)
+  
 
  
   const matchingNames = data.filter((item) => item.time === currentTime);

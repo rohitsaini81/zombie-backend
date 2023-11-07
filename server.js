@@ -10,19 +10,21 @@ const PORT = process.env.PORT || 3000;
 const uri = `mongodb+srv://${process.env.URI_PASS}@cluster0.8t0hk4y.mongodb.net/${process.env.DATABASE}`;
 app.use(cors());
 app.use(bodyParser.json());
-
+console.log(3)
 // Connect to the MongoDB database
 const dbcon = async (uri) => {
   try {
     await mongoose.connect(uri, {
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true
     });
     console.log("db on!");
   } catch (error) {
-    console.log(error);
+    console.log("ab kya hua \n",error);
   }
 };
 
-import "./clock.js";
+import "./circle.js";
 
 dbcon(uri);
 app.get('/api/6', async(req,res)=>{
@@ -37,5 +39,6 @@ app.get('/api/6', async(req,res)=>{
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port http://127.0.0.1:${PORT}`);
   });
+// this is rohit saini

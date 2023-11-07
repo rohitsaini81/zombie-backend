@@ -228,7 +228,7 @@ const data = [
   { name: "Shree Ganesh", time: "4.50" },//-4.50
 
   { name: "Faridabad", time: "6.00" },//-6.00
-  { name: "Gajiyabad", time: "9.00" },//-9.00 
+  { name: "Gajiyabad", time: "9.20" },//-9.00 
   { name: "Gali", time: "11.30" },//-11.30
   { name: "Disawar", time: "5.00" },//-5.00
 ];
@@ -240,13 +240,16 @@ const data = [
 timeapi()
 sleep(5000).then(()=>{console.log(nowTime," ",setdate)})
 const now = new Date()
+
 function displayCurrentTime() {
   let timeString = now.toLocaleTimeString();
+
+  timeString = nowTime;
   const a = timeString.split(':');
   const currentTime = `${a[0]}.${a[1]}`;
-  const AM = a[2].includes('AM');
-  timeString = nowTime;
-  // console.log(timeString,AM)
+ 
+ const AM = a[2].includes('AM');
+   console.log(timeString,AM)
 
 
  

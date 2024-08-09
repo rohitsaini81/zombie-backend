@@ -241,10 +241,11 @@ timeapi()
 sleep(5000).then(()=>{console.log(nowTime," ",setdate)})
 const now = new Date()
 
-function displayCurrentTime() {
-  let timeString = now.toLocaleTimeString();
-
-  timeString = nowTime;
+async function displayCurrentTime() {
+  let timeString = await now.toLocaleTimeString();
+  console.dir(timeString)
+  // timeString = nowTime;
+  console.dir(timeString)
   const a = timeString.split(':');
   const currentTime = `${a[0]}.${a[1]}`;
  
